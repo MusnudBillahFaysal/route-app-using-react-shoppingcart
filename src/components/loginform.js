@@ -17,11 +17,14 @@ const LoginForm = () => {
   };
 
   const handleLogin = () => {
-    // Check if the entered username and password match the stored values in localStorage
-    const storedUsername = localStorage.getItem('username');
-    const storedPassword = localStorage.getItem('password');
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-    if (username === storedUsername && password === storedPassword) {
+    // Find the user object with the matching username and password
+    const user = storedUsers.find(
+      (u) => u.username === username && u.password === password
+    );
+
+    if (user) {
       // Redirect the user to the Home page if the login is successful
       navigate('/home');
     } else {

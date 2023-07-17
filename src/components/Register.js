@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleRegister = () => {
-    // Perform registration logic, such as creating a new user and storing their credentials
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-    // For example, you can store the username and password in localStorage
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
+    // Create a new user object with the provided username and password
+    const newUser = { username, password };
 
-    // Optionally, you can redirect the user to the login page after successful registration
-    // Replace '/login' with the actual login page route in your application
-    // history.push('/login');
+    // Add the new user to the existing users array
+    const updatedUsers = [...existingUsers, newUser];
+
+    // Store the updated users array in localStorage
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
+
+    navigate('/');
   };
 
   const handleUsernameChange = (e) => {
