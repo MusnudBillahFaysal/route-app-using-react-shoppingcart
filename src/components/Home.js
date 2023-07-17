@@ -3,6 +3,7 @@ import data from './data.json';
 import Products from './Products';
 import Filter from './Filter';
 import Cart from './Cart';
+import { Link } from 'react-router-dom';
 
 class Home extends React.Component {
   constructor() {
@@ -88,7 +89,20 @@ class Home extends React.Component {
     return (
       <div className="grid-container">
         <header>
-          <a href="/">React Shopping Cart</a>
+          <a href="#">React Shopping Cart</a>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/home">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">Productlist</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
+            </ul>
+          </nav>
         </header>
         <main>
           <div className="content">

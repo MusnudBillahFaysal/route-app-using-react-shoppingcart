@@ -6,6 +6,9 @@ import App from './App';
 import Contact from './components/Contact';
 import Productlist from './components/Productlist';
 import reportWebVitals from './reportWebVitals';
+import Home from './components/Home';
+import Register from './components/Register';
+import Unauthorized from './components/Unauthorized';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,8 +16,12 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="register" element={<Register />} />
+        <Route path="home" element={<Home />} />
         <Route path="about" element={<Productlist />} />
-        <Route path="Contact" element={<Contact />} />
+
+        <Route path="contact" element={<Contact />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
       </Routes>
     </BrowserRouter>
     ,
