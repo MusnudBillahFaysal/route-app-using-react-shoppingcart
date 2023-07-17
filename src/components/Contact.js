@@ -1,8 +1,8 @@
 import React from 'react';
-
+import './loginform.css';
 function Contact() {
   return (
-    <div className="contact-page">
+    <div className="cover">
       <h1>Contact Us</h1>
       <form className="contact-form">
         <div className="form-group">

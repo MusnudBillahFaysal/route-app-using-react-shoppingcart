@@ -6,7 +6,8 @@
       "title": "Midi sundress with shirring detail",
       "description": "This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.",
       "availableSizes": ["X", "L", "XL", "XXL"],
-      "price": 289.9
+      "price": 289.9,
+      "category": "Woman"
     },
     {
       "_id": "dress2",
@@ -14,7 +15,8 @@
       "title": "Midi sundress with ruched front",
       "description": "This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.",
       "availableSizes": ["X", "M", "L"],
-      "price": 198.9
+      "price": 198.9,
+      "category": "Woman"
     },
     {
       "_id": "dress3",
@@ -22,7 +24,8 @@
       "title": "Midi dress in pink ditsy floral",
       "description": "This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.",
       "availableSizes": ["X", "M", "L"],
-      "price": 164.9
+      "price": 164.9,
+      "category": "Woman"
     },
     {
       "_id": "dress4",
@@ -30,7 +33,8 @@
       "title": "cami maxi dress in polka dot",
       "description": "This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.",
       "availableSizes": ["XL"],
-      "price": 285.9
+      "price": 285.9,
+      "category": "Woman"
     },
     {
       "_id": "dress5",
@@ -38,7 +42,8 @@
       "title": "Frill mini dress in yellow polka dot",
       "description": "This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.",
       "availableSizes": ["X", "L", "XL"],
-      "price": 180.9
+      "price": 180.9,
+      "category": "Woman"
     },
     {
       "_id": "dress6",
@@ -46,7 +51,62 @@
       "title": "Midi tea dress in blue and red spot",
       "description": "This is for all the latest trends, no matter who you are, where you’re from and what you’re up to. Exclusive to ASOS, our universal brand is here for you, and comes in all our fit ranges: ASOS Curve, Tall, Petite and Maternity. Created by us, styled by you.",
       "availableSizes": ["XL", "XXL"],
-      "price": 149.9
+      "price": 149.9,
+      "category": "Woman"
+    },
+    {
+      "_id": "man1",
+      "image": "/images/man1.jpg",
+      "title": "Men's T-shirt",
+      "description": "This is a stylish and comfortable men's t-shirt. Made with high-quality fabric, it offers a great fit and durability.",
+      "availableSizes": ["S", "M", "L", "XL"],
+      "price": 39.9,
+      "category": "Man"
+    },
+    {
+      "_id": "man2",
+      "image": "/images/man2.jpg",
+      "title": "Men's Jeans",
+      "description": "These men's jeans are crafted from premium denim and designed to provide a stylish and comfortable fit. Perfect for any casual or smart-casual occasion.",
+      "availableSizes": ["30W x 32L", "32W x 32L", "34W x 32L", "36W x 32L"],
+      "price": 79.9,
+      "category": "Man"
+    },
+    {
+      "_id": "man3",
+      "image": "/images/man3.jpg",
+      "title": "Men's Sneakers",
+      "description": "Step out in style with these trendy men's sneakers. They feature a sleek design and cushioned insoles for maximum comfort.",
+      "availableSizes": ["US 8", "US 9", "US 10", "US 11"],
+      "price": 99.9,
+      "category": "Man"
+    },
+    {
+      "_id": "child1",
+      "image": "/images/child1.jpg",
+      "title": "Kid's T-shirt",
+      "description": "This kid's t-shirt is made from soft and breathable fabric, ensuring comfort all day long. It is perfect for playtime or casual outings.",
+      "availableSizes": ["2-3 Years", "4-5 Years", "6-7 Years", "8-9 Years"],
+      "price": 19.9,
+      "category": "Children"
+    },
+    {
+      "_id": "child2",
+      "image": "/images/child2.jpg",
+      "title": "Kid's Jeans",
+      "description": "These kid's jeans are designed with both style and durability in mind. They feature an adjustable waistband for a perfect fit.",
+      "availableSizes": ["2-3 Years", "4-5 Years", "6-7 Years", "8-9 Years"],
+      "price": 29.9,
+      "category": "Children"
+    },
+    {
+      "_id": "child3",
+      "image": "/images/child3.jpg",
+      "title": "Kid's Sneakers",
+      "description": "These kid's sneakers are lightweight and comfortable, making them perfect for active little ones. They come in a variety of fun colors.",
+      "availableSizes": ["US 10C", "US 11C", "US 12C", "US 13C"],
+      "price": 39.9,
+      "category": "Children"
     }
   ]
 }
