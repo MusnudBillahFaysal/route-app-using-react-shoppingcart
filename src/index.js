@@ -1,3 +1,4 @@
+// index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -9,6 +10,8 @@ import reportWebVitals from './reportWebVitals';
 import Home from './components/Home';
 import Register from './components/Register';
 import Unauthorized from './components/Unauthorized';
+import PrivateRoute from './components/PrivateRoute';
+import LoginForm from './components/loginform';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,15 +19,22 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="register" element={<Register />} />
+        <Route path="/loginform" element={<LoginForm />} />
+        <Route path="/register" element={<Register />} />
         <Route path="home" element={<Home />} />
-        <Route path="about" element={<Productlist />} />
-
-        <Route path="contact" element={<Contact />} />
+        {/* <Route path="about" element={<Productlist />} /> */}
+        <Route
+          path="/contact"
+          element={
+            <PrivateRoute>
+              <Contact />
+            </PrivateRoute>
+          }
+        />
+        {/* <Route path="contact" element={<Contact />} /> */}
         <Route path="unauthorized" element={<Unauthorized />} />
       </Routes>
     </BrowserRouter>
-    ,
   </React.StrictMode>
 );
 
