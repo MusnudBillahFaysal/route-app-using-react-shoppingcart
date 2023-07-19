@@ -5,7 +5,6 @@ import './loginform.css';
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
   const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
@@ -25,12 +24,20 @@ const LoginForm = () => {
     );
 
     if (user) {
-      // Redirect the user to the Home page if the login is successful
+      // Set the login status to 'true' in localStorage
+      localStorage.setItem('isLoggedIn', 'true');
       navigate('/home');
     } else {
-      // Redirect the user to an unauthorized page if the login fails
-      navigate('/unauthorized');
+      navigate('/register');
     }
+  };
+
+  const handleLogout = () => {
+    // Clear the login status from localStorage
+    localStorage.removeItem('isLoggedIn');
+    // Perform any additional logout logic if needed
+    // Redirect the user to the login page or any other appropriate page
+    navigate('/loginform');
   };
 
   return (
@@ -49,6 +56,8 @@ const LoginForm = () => {
         onChange={handlePasswordChange}
       />
       <button onClick={handleLogin}>Login</button>
+      <h1>If not account</h1>
+      <button onClick={handleLogout}>Register</button>
     </div>
   );
 };

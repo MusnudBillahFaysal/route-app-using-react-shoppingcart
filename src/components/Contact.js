@@ -25,7 +25,7 @@ function Contact() {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="form-group-1">
           <label htmlFor="message">Message:</label>
           <textarea
             id="message"

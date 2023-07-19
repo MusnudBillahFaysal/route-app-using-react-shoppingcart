@@ -85,7 +85,14 @@ class Home extends React.Component {
       });
     }
   };
+  handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    this.setState({ cartItems: [] }); // Clear cart items
+  };
+
   render() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
     return (
       <div className="grid-container">
         <header>
@@ -100,6 +107,21 @@ class Home extends React.Component {
               </li>
               <li>
                 <Link to="/contact">Contact</Link>
+              </li>
+              <li>
+                {isLoggedIn ? (
+                  <>
+                    <span>Logged in</span>
+                    <button
+                      className="button primary"
+                      onClick={this.handleLogout}
+                    >
+                      Log out
+                    </button>
+                  </>
+                ) : (
+                  <Link to="/loginform">Log in</Link>
+                )}
               </li>
             </ul>
           </nav>
@@ -134,4 +156,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home; // feature 1
+export default Home;
