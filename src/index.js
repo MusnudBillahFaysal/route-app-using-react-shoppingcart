@@ -12,6 +12,7 @@ import Register from './components/Register';
 import Unauthorized from './components/Unauthorized';
 import PrivateRoute from './components/PrivateRoute';
 import LoginForm from './components/loginform';
+import CheckoutForm from './components/CheckoutForm';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,8 +22,9 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/loginform" element={<LoginForm />} />
         <Route path="/register" element={<Register />} />
-        <Route path="home" element={<Home />} />
-        <Route path="about" element={<Productlist />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/about" element={<Productlist />} />
+        <Route path="/checkoutform" element={<CheckoutForm />} />
         <Route
           path="/contact"
           element={

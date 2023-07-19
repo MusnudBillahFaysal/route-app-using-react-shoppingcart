@@ -28,7 +28,7 @@ const LoginForm = () => {
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/home');
     } else {
-      navigate('/register');
+      navigate('/Unauthorized');
     }
   };
 
@@ -37,7 +37,7 @@ const LoginForm = () => {
     localStorage.removeItem('isLoggedIn');
     // Perform any additional logout logic if needed
     // Redirect the user to the login page or any other appropriate page
-    navigate('/loginform');
+    navigate('/Unauthorized');
   };
 
   return (
@@ -56,8 +56,6 @@ const LoginForm = () => {
         onChange={handlePasswordChange}
       />
       <button onClick={handleLogin}>Login</button>
-      <h1>If not account</h1>
-      <button onClick={handleLogout}>Register</button>
     </div>
   );
 };

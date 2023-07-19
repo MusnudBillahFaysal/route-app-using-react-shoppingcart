@@ -221,6 +221,7 @@ footer {
   flex-wrap: wrap;
 }
 .main {
+  background-color: #ccc;
   flex: 3 60rem;
 }
 .sidebar {

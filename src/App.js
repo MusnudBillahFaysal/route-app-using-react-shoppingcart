@@ -3,10 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import LoginForm from './components/loginform';
 import Home from './components/Home';
 import Productlist from './components/Productlist';
-import Contact from './components/Contact';
+
 import NotFound from './components/NotFound';
 import Register from './components/Register';
-import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (

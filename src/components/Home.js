@@ -1,41 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import data from './data.json';
 import Products from './Products';
 import Filter from './Filter';
 import Cart from './Cart';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import CheckoutForm from './CheckoutForm';
 
-class Home extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      products: data.products,
-      cartItems: JSON.parse(localStorage.getItem('cartItems')),
-      size: '',
-      sort: '',
-    };
-  }
+const Home = () => {
+  const navigate = useNavigate();
+  const [products, setProducts] = useState(data.products);
+  const [cartItems, setCartItems] = useState(
+    JSON.parse(localStorage.getItem('cartItems'))
+  );
+  const [size, setSize] = useState('');
+  const [sort, setSort] = useState('');
 
-  createOrder = (order) => {
-    alert('Need to save order for ' + order.name);
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const createOrder = (order) => {
+    navigate('/checkoutform');
   };
 
-  removeFromCart = (product) => {
-    const cartItems = this.state.cartItems.slice();
-    this.setState({
-      cartItems: cartItems.filter((X) => X._id !== product._id),
-    });
-
-    localStorage.setItem(
-      'cartItems',
-      JSON.stringify(cartItems.filter((X) => X._id !== product._id))
+  const removeFromCart = (product) => {
+    const updatedCartItems = cartItems.filter(
+      (item) => item._id !== product._id
     );
+    setCartItems(updatedCartItems);
   };
 
-  addTocart = (product) => {
-    const cartItems = this.state.cartItems.slice();
+  const addTocart = (product) => {
+    // Updated prop name to addTocart
+    const updatedCartItems = [...cartItems];
     let alreadyInCart = false;
-    cartItems.forEach((item) => {
+    updatedCartItems.forEach((item) => {
       if (item._id === product._id) {
         item.count++;
         alreadyInCart = true;
@@ -43,117 +43,103 @@ class Home extends React.Component {
     });
 
     if (!alreadyInCart) {
-      cartItems.push({ ...product, count: 1 });
+      updatedCartItems.push({ ...product, count: 1 });
     }
-    this.setState({ cartItems });
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    setCartItems(updatedCartItems);
   };
 
-  sortProducts = (event) => {
-    const sort = event.target.value;
-    console.log(event.target.value);
-    this.setState((state) => ({
-      sort: sort,
-      products: this.state.products
-        .slice()
-        .sort((a, b) =>
-          sort === 'lowest'
-            ? a.price > b.price
-              ? 1
-              : -1
-            : sort === 'highest'
-            ? a.price < b.price
-              ? 1
-              : -1
-            : a._id > b._id
-            ? 1
-            : -1
-        ),
-    }));
-  };
-
-  filterProducts = (event) => {
-    console.log(event.target.value);
-    if (event.target.value === '') {
-      this.setState({ size: event.target.value, product: data.products });
-    } else {
-      this.setState({
-        size: event.target.value,
-        products: data.products.filter(
-          (product) => product.availableSizes.indexOf(event.target.value) >= 0
-        ),
-      });
-    }
-  };
-  handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    this.setState({ cartItems: [] }); // Clear cart items
-  };
-
-  render() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    return (
-      <div className="grid-container">
-        <header>
-          <a href="#">React Shopping Cart</a>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/home">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">Productlist</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact</Link>
-              </li>
-              <li>
-                {isLoggedIn ? (
-                  <>
-                    <span>Logged in</span>
-                    <button
-                      className="button primary"
-                      onClick={this.handleLogout}
-                    >
-                      Log out
-                    </button>
-                  </>
-                ) : (
-                  <Link to="/loginform">Log in</Link>
-                )}
-              </li>
-            </ul>
-          </nav>
-        </header>
-        <main>
-          <div className="content">
-            <div className="main">
-              <Filter
-                count={this.state.products.length}
-                size={this.state.size}
-                sort={this.state.sort}
-                filterProducts={this.filterProducts}
-                sortProducts={this.sortProducts}
-              ></Filter>
-              <Products
-                products={this.state.products}
-                addTocart={this.addTocart}
-              ></Products>
-            </div>
-            <div className="sidebar">
-              <Cart
-                cartItems={this.state.cartItems}
-                removeFromCart={this.removeFromCart}
-                createOrder={this.createOrder}
-              />
-            </div>
-          </div>
-        </main>
-        <footer>All right is reserved.</footer>
-      </div>
+  const sortProducts = (event) => {
+    const sortValue = event.target.value;
+    setSort(sortValue);
+    setProducts(
+      [...products].sort((a, b) => {
+        if (sortValue === 'lowest') {
+          return a.price > b.price ? 1 : -1;
+        } else if (sortValue === 'highest') {
+          return a.price < b.price ? 1 : -1;
+        }
+        return a._id > b._id ? 1 : -1;
+      })
     );
-  }
-}
+  };
+
+  const filterProducts = (event) => {
+    const sizeValue = event.target.value;
+    setSize(sizeValue);
+    if (sizeValue === '') {
+      setProducts(data.products);
+    } else {
+      setProducts(
+        data.products.filter(
+          (product) => product.availableSizes.indexOf(sizeValue) >= 0
+        )
+      );
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setCartItems([]); // Clear cart items
+  };
+
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  return (
+    <div className="grid-container">
+      <header>
+        <a href="#">React Shopping Cart</a>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/home">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">Productlist</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+            <li>
+              {isLoggedIn ? (
+                <>
+                  <span>Logged in</span>
+                  <button className="button primary" onClick={handleLogout}>
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <Link to="/loginform">Log in</Link>
+              )}
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <div className="content">
+          <div className="main">
+            <Filter
+              count={products.length}
+              size={size}
+              sort={sort}
+              filterProducts={filterProducts}
+              sortProducts={sortProducts}
+            />
+            <Products products={products} addTocart={addTocart} />{' '}
+            {/* Updated prop name */}
+          </div>
+          <div className="sidebar">
+            <Cart
+              cartItems={cartItems}
+              removeFromCart={removeFromCart}
+              createOrder={createOrder}
+              addTocart={addTocart}
+            />
+          </div>
+        </div>
+      </main>
+      <footer>All right is reserved.</footer>
+    </div>
+  );
+};
 
 export default Home;
