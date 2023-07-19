@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/loginform" element={<LoginForm />} />
-        {/* <Route path="/about" element={<Productlist />} /> */}
+        <Route path="/about" element={<Productlist />} />
         {/* <Route path="/contact" element={<Contact />} /> */}
         <Route path="*" element={<NotFound />} />
         {/* <Route
