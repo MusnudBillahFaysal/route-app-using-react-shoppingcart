@@ -1,20 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import formatCurrency from '../util';
 import { useNavigate } from 'react-router-dom';
 
-const Cart = ({ cartItems, removeFromCart, createOrder }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [showCheckout, setShowCheckout] = useState(false);
-
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    if (name === 'name') setName(value);
-    else if (name === 'email') setEmail(value);
-    else if (name === 'address') setAddress(value);
-  };
-
+const Cart = ({ cartItems, removeFromCart, createOrder, addTocart }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -23,8 +11,7 @@ const Cart = ({ cartItems, removeFromCart, createOrder }) => {
     // Redirect the user to the login page or any other appropriate page
   };
 
-  const handleCreateOrder = (e) => {
-    e.preventDefault();
+  const handleCreateOrder = () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
     if (!isLoggedIn) {
@@ -33,12 +20,12 @@ const Cart = ({ cartItems, removeFromCart, createOrder }) => {
     } else {
       // Proceed with the checkout
       const order = {
-        email,
-        name,
-        address,
         cartItems,
       };
       createOrder(order);
+
+      // Redirect the user to the checkout form
+      navigate('/checkoutform');
     }
   };
 
@@ -93,57 +80,13 @@ const Cart = ({ cartItems, removeFromCart, createOrder }) => {
                     </b>
                   </div>
                   <button
-                    onClick={() => setShowCheckout(true)}
+                    onClick={handleCreateOrder}
                     className="button primary"
                   >
                     <b>Proceed</b>
                   </button>
                 </div>
               </div>
-
-              {showCheckout && (
-                <div className="cart">
-                  <form onSubmit={handleCreateOrder}>
-                    <ul className="form-container">
-                      <li>
-                        <label>Email</label>
-                        <input
-                          name="email"
-                          type="email"
-                          required
-                          value={email}
-                          onChange={handleInput}
-                        ></input>
-                      </li>
-                      <li>
-                        <label>Name</label>
-                        <input
-                          name="name"
-                          type="text"
-                          required
-                          value={name}
-                          onChange={handleInput}
-                        ></input>
-                      </li>
-                      <li>
-                        <label>Address</label>
-                        <input
-                          name="address"
-                          type="text"
-                          required
-                          value={address}
-                          onChange={handleInput}
-                        ></input>
-                      </li>
-                      <li>
-                        <button className="button primary" type="submit">
-                          Checkout
-                        </button>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-              )}
             </div>
           )}
         </div>
