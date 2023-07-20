@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import './CSS/loginform.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -31,24 +32,67 @@ const Register = () => {
   };
 
   return (
-    <div className="cover">
+    <div className="containers">
       <h1>Register</h1>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={handleUsernameChange}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={handlePasswordChange}
-      />
-      <button onClick={handleRegister}>Register</button>
-      <p>
-        Already have an account? <Link to="/">Go to Login</Link>
-      </p>
+      <form className="login-form">
+        <div className="form-outline mb-4">
+          <input
+            type="text"
+            id="form2Example1"
+            className="form-control"
+            placeholder="Username"
+            value={username}
+            onChange={handleUsernameChange}
+          />
+          <br></br>
+
+          <label className="form-label" htmlFor="form2Example1">
+            Email address
+          </label>
+        </div>
+
+        <div className="form-outline mb-4">
+          <input
+            type="password"
+            id="form2Example2"
+            className="form-control"
+            placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
+          />{' '}
+          <br></br>
+          <label className="form-label" htmlFor="form2Example2">
+            Password
+          </label>
+        </div>
+
+        <button
+          type="button"
+          className="btn btn-primary btn-block mb-4"
+          onClick={handleRegister}
+        >
+          Sign in
+        </button>
+
+        <div className="text-center">
+          <p>or sign up with:</p>
+          <button type="button" className="btn btn-link btn-floating mx-1">
+            <i className="fab fa-facebook-f fa-lg"></i>
+          </button>
+
+          <button type="button" className="btn btn-link btn-floating mx-1">
+            <i className="fab fa-google fa-lg"></i>
+          </button>
+
+          <button type="button" className="btn btn-link btn-floating mx-1">
+            <i className="fab fa-twitter fa-lg"></i>
+          </button>
+
+          <button type="button" className="btn btn-link btn-floating mx-1">
+            <i className="fab fa-github fa-lg"></i>
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

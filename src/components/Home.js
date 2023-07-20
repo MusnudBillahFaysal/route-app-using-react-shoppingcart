@@ -3,12 +3,12 @@ import data from './data.json';
 import Products from './Products';
 import Filter from './Filter';
 import Cart from './Cart';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import CheckoutForm from './CheckoutForm';
 
 const Home = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [products, setProducts] = useState(data.products);
   const [cartItems, setCartItems] = useState(
     JSON.parse(localStorage.getItem('cartItems'))
@@ -20,9 +20,15 @@ const Home = () => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // const createOrder = (order) => {
+  //   navigate('/checkoutform', { state: { cartItems } }); // Pass cartItems directly as a prop
+  // };
+
   const createOrder = (order) => {
-    navigate('/checkoutform');
+    navigate('/checkoutform', { state: { cartItems } });
   };
+
+  // Rest of your code
 
   const removeFromCart = (product) => {
     const updatedCartItems = cartItems.filter(
@@ -32,7 +38,6 @@ const Home = () => {
   };
 
   const addTocart = (product) => {
-    // Updated prop name to addTocart
     const updatedCartItems = [...cartItems];
     let alreadyInCart = false;
     updatedCartItems.forEach((item) => {
@@ -79,10 +84,56 @@ const Home = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
-    setCartItems([]); // Clear cart items
+    setCartItems([]);
   };
 
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  const handleCreateOrder = () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    if (!isLoggedIn) {
+      // Redirect the user to the login page if not logged in
+      navigate('/loginform');
+    } else {
+      // Proceed with the checkout
+      const order = {
+        cartItems,
+      };
+      createOrder(order);
+
+      // Redirect the user to the checkout form
+      navigate('/checkoutform', { state: { cartItems } });
+    }
+  };
+
+  // const handleCreateOrder = () => {
+  //   if (!isLoggedIn) {
+  //     navigate('/loginform');
+  //   } else {
+  //     const order = {
+  //       cartItems,
+  //     };
+  //     createOrder(order);
+
+  //     navigate('/checkoutform', {
+  //       state: { cartItems },
+  //       key: cartItems.length > 0 ? Date.now() : 'empty',
+  //     });
+  //   }
+  // };
+  // const handleCreateOrder = () => {
+  //   if (!isLoggedIn) {
+  //     navigate('/loginform');
+  //   } else {
+  //     const order = {
+  //       cartItems,
+  //     };
+  //     createOrder(order);
+
+  //     navigate('/checkoutform');
+  //   }
+  // };
 
   return (
     <div className="grid-container">
@@ -131,7 +182,7 @@ const Home = () => {
             <Cart
               cartItems={cartItems}
               removeFromCart={removeFromCart}
-              createOrder={createOrder}
+              createOrder={handleCreateOrder} // Update the prop name here
               addTocart={addTocart}
             />
           </div>
