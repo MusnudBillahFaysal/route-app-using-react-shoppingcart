@@ -2,6 +2,8 @@ import React from 'react';
 import formatCurrency from '../util';
 import { useNavigate } from 'react-router-dom';
 
+import { useLocation } from 'react-router-dom';
+
 const Cart = ({ cartItems, removeFromCart, createOrder, addTocart }) => {
   const navigate = useNavigate();
 
@@ -25,7 +27,7 @@ const Cart = ({ cartItems, removeFromCart, createOrder, addTocart }) => {
       createOrder(order);
 
       // Redirect the user to the checkout form
-      navigate('/checkoutform');
+      navigate('/checkoutform', { state: { cartItems } });
     }
   };
 
