@@ -251,6 +251,7 @@ footer {
 }
 
 .product-price {
+  font: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -261,7 +262,9 @@ footer {
   flex: 1;
 }
 .product-price div {
-  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .button {
   padding: 1rem;
