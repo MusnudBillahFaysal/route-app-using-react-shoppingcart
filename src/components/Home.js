@@ -10,9 +10,13 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [products, setProducts] = useState(data.products);
+  // const [cartItems, setCartItems] = useState(
+  //   JSON.parse(localStorage.getItem('cartItems'))
+  // );
   const [cartItems, setCartItems] = useState(
-    JSON.parse(localStorage.getItem('cartItems'))
+    JSON.parse(localStorage.getItem('cartItems')) || [] // Default to an empty array
   );
+
   const [size, setSize] = useState('');
   const [sort, setSort] = useState('');
 
@@ -180,7 +184,8 @@ const Home = () => {
           </div>
           <div className="sidebar">
             <Cart
-              cartItems={cartItems}
+              // cartItems={cartItems}
+              cartItems={cartItems || []} // Default to an empty array
               removeFromCart={removeFromCart}
               createOrder={handleCreateOrder} // Update the prop name here
               addTocart={addTocart}
