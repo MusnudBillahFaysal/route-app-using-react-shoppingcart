@@ -2,7 +2,7 @@ import React from 'react';
 import './CSS/loginform.css';
 function Contact() {
   return (
-    <div className="cover">
+    <div className="containers">
       <h1>Contact Us</h1>
       <form className="contact-form">
         <div className="form-group">
