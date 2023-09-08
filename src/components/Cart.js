@@ -1,35 +1,54 @@
-import React from 'react';
+//import React from 'react';
 import formatCurrency from '../util';
 import { useNavigate } from 'react-router-dom';
-
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+
+import { useUserContext } from './UserContext'; // Import the user context
 
 const Cart = ({ cartItems, removeFromCart, createOrder, addTocart }) => {
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    // Add any additional logout logic if needed
-    // Redirect the user to the login page or any other appropriate page
-  };
+  const { state, dispatch } = useUserContext(); // Use the user context
 
   const handleCreateOrder = () => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    if (!isLoggedIn) {
-      // Redirect the user to the login page if not logged in
+    if (!state.isLoggedIn) {
       navigate('/loginform');
     } else {
-      // Proceed with the checkout
       const order = {
-        cartItems,
+        cartItems: state.cartItems,
       };
-      createOrder(order);
+      dispatch({ type: 'CREATE_ORDER', payload: order });
 
-      // Redirect the user to the checkout form
-      navigate('/checkoutform', { state: { cartItems } });
+      navigate('/checkoutform', { state: { cartItems: order.cartItems } });
     }
   };
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    // navigate('/Unauthorized');
+  };
+  // const handleLogout = () => {
+  //   // Dispatch the LOGOUT action
+  //   dispatch({ type: 'LOGOUT' });
+  //   setCartItems([]); // Clear cart items
+  //   navigate('/Unauthorized');
+  // };
+  // const handleCreateOrder = () => {
+  //   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+  //   if (!isLoggedIn) {
+  //     // Redirect the user to the login page if not logged in
+  //     navigate('/loginform');
+  //   } else {
+  //     // Proceed with the checkout
+  //     const order = {
+  //       cartItems,
+  //     };
+  //     createOrder(order);
+
+  //     // Redirect the user to the checkout form
+  //     navigate('/checkoutform', { state: { cartItems } });
+  //   }
+  // };
 
   return (
     <div>
@@ -82,7 +101,9 @@ const Cart = ({ cartItems, removeFromCart, createOrder, addTocart }) => {
                     </b>
                   </div>
                   <button
-                    onClick={handleCreateOrder}
+                    onClick={() =>
+                      handleCreateOrder(state.isLoggedIn, cartItems)
+                    }
                     className="button primary"
                   >
                     <b>Proceed</b>

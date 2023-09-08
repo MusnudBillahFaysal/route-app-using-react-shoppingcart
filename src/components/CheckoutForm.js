@@ -6,9 +6,11 @@ import formatCurrency from '../util';
 import Cart from './Cart';
 import { useLocation } from 'react-router-dom';
 
+import { useUserContext } from './UserContext'; // Import the user context
 const CheckoutForm = () => {
   const location = useLocation();
   const cartItems = location?.state?.cartItems || [];
+  const { state } = useUserContext(); // Use the UserContext
   //
   // const CheckoutForm = () => {
   //   const location = useLocation();
@@ -281,17 +283,17 @@ const CheckoutForm = () => {
             <h4 className="d-flex justify-content-between align-items-center mb-3">
               <span className="text-muted">Your cart</span>
               <span className="badge bg-secondary rounded-pill">
-                {cartItems.length === 0 ? (
+                {state.cartItems.length === 0 ? (
                   <div className="cart cart-header">0</div>
                 ) : (
-                  cartItems.length
+                  state.cartItems.length
                 )}
               </span>
             </h4>
             <div>
               <div className="cart">
                 <ul className="cart-items">
-                  {cartItems.map((item) => (
+                  {state.cartItems.map((item) => (
                     <li key={item._id}>
                       <div>
                         <img src={item.image} alt={item.title} />
@@ -310,7 +312,7 @@ const CheckoutForm = () => {
                 <b>
                   Total:{' '}
                   {formatCurrency(
-                    cartItems.reduce((a, c) => a + c.price * c.count, 0)
+                    state.cartItems.reduce((a, c) => a + c.price * c.count, 0)
                   )}
                 </b>
               </div>

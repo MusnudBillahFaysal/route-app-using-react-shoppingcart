@@ -1,79 +1,14 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import './loginform.css';
-
-// import 'bootstrap/dist/css/bootstrap.min.css';
-
-// const LoginForm = () => {
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const navigate = useNavigate();
-
-//   const handleUsernameChange = (e) => {
-//     setUsername(e.target.value);
-//   };
-
-//   const handlePasswordChange = (e) => {
-//     setPassword(e.target.value);
-//   };
-
-//   const handleLogin = () => {
-//     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-//     // Find the user object with the matching username and password
-//     const user = storedUsers.find(
-//       (u) => u.username === username && u.password === password
-//     );
-
-//     if (user) {
-//       // Set the login status to 'true' in localStorage
-//       localStorage.setItem('isLoggedIn', 'true');
-//       navigate('/home');
-//     } else {
-//       navigate('/Unauthorized');
-//     }
-//   };
-
-//   const handleLogout = () => {
-//     // Clear the login status from localStorage
-//     localStorage.removeItem('isLoggedIn');
-//     // Perform any additional logout logic if needed
-//     // Redirect the user to the login page or any other appropriate page
-//     navigate('/Unauthorized');
-//   };
-
-//   return (
-//     <div className="cover">
-//       <h1>Login</h1>
-//       <input
-//         type="text"
-//         placeholder="Username"
-//         value={username}
-//         onChange={handleUsernameChange}
-//       />
-//       <input
-//         type="password"
-//         placeholder="Password"
-//         value={password}
-//         onChange={handlePasswordChange}
-//       />
-//       <button onClick={handleLogin}>Login</button>
-//     </div>
-//   );
-// };
-
-// export default LoginForm;
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS/loginform.css';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useUserContext } from './UserContext';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { state, dispatch } = useUserContext();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -84,16 +19,16 @@ const LoginForm = () => {
   };
 
   const handleLogin = () => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const storedUsers = state.users || [];
 
-    // Find the user object with the matching username and password
     const user = storedUsers.find(
       (u) => u.username === username && u.password === password
     );
 
     if (user) {
-      // Set the login status to 'true' in localStorage
-      localStorage.setItem('isLoggedIn', 'true');
+      // Dispatch the LOGIN action to update the isLoggedIn status
+      dispatch({ type: 'LOGIN', payload: true });
+
       navigate('/home');
     } else {
       navigate('/Unauthorized');
@@ -101,11 +36,9 @@ const LoginForm = () => {
   };
 
   const handleLogout = () => {
-    // Clear the login status from localStorage
-    localStorage.removeItem('isLoggedIn');
-    // Perform any additional logout logic if needed
-    // Redirect the user to the login page or any other appropriate page
-    navigate('/Unauthorized');
+    // Dispatch the action to handle logout
+    dispatch({ type: 'LOGOUT' });
+    // navigate('/loginform');
   };
 
   return (
@@ -143,27 +76,6 @@ const LoginForm = () => {
           <label className="form-label" htmlFor="form2Example2">
             Password
           </label>
-        </div>
-
-        <div className="row mb-4">
-          <div className="col d-flex justify-content-center">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value=""
-                id="form2Example31"
-                checked
-              />
-              <label className="form-check-label" htmlFor="form2Example31">
-                Remember me
-              </label>
-            </div>
-          </div>
-
-          <div className="col">
-            <a href="#!">Forgot password?</a>
-          </div>
         </div>
 
         <button
