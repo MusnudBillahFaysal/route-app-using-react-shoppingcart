@@ -3,58 +3,56 @@ import data from './data.json';
 import Products from './Products';
 import Filter from './Filter';
 import Cart from './Cart';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CheckoutForm from './CheckoutForm';
+
+import { useUserContext } from './UserContext'; // Import the user context
 
 const Home = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [products, setProducts] = useState(data.products);
-  // const [cartItems, setCartItems] = useState(
-  //   JSON.parse(localStorage.getItem('cartItems'))
-  // );
-  const [cartItems, setCartItems] = useState(
-    JSON.parse(localStorage.getItem('cartItems')) || [] // Default to an empty array
-  );
-
   const [size, setSize] = useState('');
   const [sort, setSort] = useState('');
+  const { state, dispatch } = useUserContext(); // Use the user context
 
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+    localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+  }, [state.cartItems]);
 
-  // const createOrder = (order) => {
-  //   navigate('/checkoutform', { state: { cartItems } }); // Pass cartItems directly as a prop
+  // Add this useEffect to update isLoggedIn immediately after logout
+  useEffect(() => {
+    if (!state.isLoggedIn) {
+      // You might need to replace 'isLoggedIn' with the appropriate key in your localStorage
+      localStorage.setItem('isLoggedIn', 'false');
+    }
+  }, [state.isLoggedIn]);
+
+  // const handleCreateOrder = () => {
+  //   if (!state.isLoggedIn) {
+  //     navigate('/loginform'); // Redirect to login if not logged in
+  //   } else {
+  //     const order = {
+  //       cartItems: state.cartItems,
+  //     };
+  //     navigate('/checkoutform', { state: { order } });
+  //   }
   // };
 
+  // const isLoggedIn = state.isLoggedIn;
   const createOrder = (order) => {
-    navigate('/checkoutform', { state: { cartItems } });
+    navigate('/checkoutform', { state: { cartItems: order.cartItems } });
   };
+  const handleCreateOrder = () => {
+    if (!state.isLoggedIn) {
+      navigate('/loginform');
+    } else {
+      const order = {
+        cartItems: state.cartItems,
+      };
+      dispatch({ type: 'CREATE_ORDER', payload: order });
 
-  // Rest of your code
-
-  const removeFromCart = (product) => {
-    const updatedCartItems = cartItems.filter(
-      (item) => item._id !== product._id
-    );
-    setCartItems(updatedCartItems);
-  };
-
-  const addTocart = (product) => {
-    const updatedCartItems = [...cartItems];
-    let alreadyInCart = false;
-    updatedCartItems.forEach((item) => {
-      if (item._id === product._id) {
-        item.count++;
-        alreadyInCart = true;
-      }
-    });
-
-    if (!alreadyInCart) {
-      updatedCartItems.push({ ...product, count: 1 });
+      navigate('/checkoutform', { state: { cartItems: order.cartItems } });
     }
-    setCartItems(updatedCartItems);
   };
 
   const sortProducts = (event) => {
@@ -86,58 +84,20 @@ const Home = () => {
     }
   };
 
+  const addTocart = (product) => {
+    dispatch({ type: 'ADD_TO_CART', payload: { ...product, count: 1 } });
+  };
+
+  const removeFromCart = (product) => {
+    dispatch({ type: 'REMOVE_FROM_CART', payload: product });
+  };
+  // const handleLogout = () => {
+  //   dispatch({ type: 'LOGOUT' }); // Dispatch logout action
+  // };
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    setCartItems([]);
+    dispatch({ type: 'LOGOUT' });
+    // navigate('/loginform');
   };
-
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-  const handleCreateOrder = () => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    if (!isLoggedIn) {
-      // Redirect the user to the login page if not logged in
-      navigate('/loginform');
-    } else {
-      // Proceed with the checkout
-      const order = {
-        cartItems,
-      };
-      createOrder(order);
-
-      // Redirect the user to the checkout form
-      navigate('/checkoutform', { state: { cartItems } });
-    }
-  };
-
-  // const handleCreateOrder = () => {
-  //   if (!isLoggedIn) {
-  //     navigate('/loginform');
-  //   } else {
-  //     const order = {
-  //       cartItems,
-  //     };
-  //     createOrder(order);
-
-  //     navigate('/checkoutform', {
-  //       state: { cartItems },
-  //       key: cartItems.length > 0 ? Date.now() : 'empty',
-  //     });
-  //   }
-  // };
-  // const handleCreateOrder = () => {
-  //   if (!isLoggedIn) {
-  //     navigate('/loginform');
-  //   } else {
-  //     const order = {
-  //       cartItems,
-  //     };
-  //     createOrder(order);
-
-  //     navigate('/checkoutform');
-  //   }
-  // };
 
   return (
     <div className="grid-container">
@@ -154,13 +114,17 @@ const Home = () => {
             <li>
               <Link to="/contact">Contact</Link>
             </li>
+
             <li>
-              {isLoggedIn ? (
+              {console.log('isLoggedIn:', state.isLoggedIn)}{' '}
+              {/* Check the state */}
+              {state.isLoggedIn ? (
                 <>
                   <span>Logged in</span>
                   <button className="button primary" onClick={handleLogout}>
                     Log out
                   </button>
+                  {console.log('isLoggedInS:', state.isLoggedIn)}{' '}
                 </>
               ) : (
                 <Link to="/loginform">Log in</Link>
@@ -179,21 +143,19 @@ const Home = () => {
               filterProducts={filterProducts}
               sortProducts={sortProducts}
             />
-            <Products products={products} addTocart={addTocart} />{' '}
-            {/* Updated prop name */}
+            <Products products={products} addTocart={addTocart} />
           </div>
           <div className="sidebar">
             <Cart
-              // cartItems={cartItems}
-              cartItems={cartItems || []} // Default to an empty array
+              cartItems={state.cartItems || []}
               removeFromCart={removeFromCart}
-              createOrder={handleCreateOrder} // Update the prop name here
+              createOrder={handleCreateOrder}
               addTocart={addTocart}
             />
           </div>
         </div>
       </main>
-      <footer>All right is reserved.</footer>
+      <footer>All rights reserved.</footer>
     </div>
   );
 };

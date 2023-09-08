@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from './UserContext';
 import './CSS/loginform.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { dispatch } = useUserContext();
   const navigate = useNavigate();
 
   const handleRegister = () => {
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Create a new user object with the provided username and password
-    const newUser = { username, password };
-
-    // Add the new user to the existing users array
-    const updatedUsers = [...existingUsers, newUser];
-
-    // Store the updated users array in localStorage
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    // Dispatch the REGISTER_USER action
+    dispatch({
+      type: 'REGISTER_USER',
+      payload: { username, password },
+    });
 
     navigate('/');
   };
